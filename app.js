@@ -16,7 +16,7 @@ function main() {
      .then((rows) => {
         rows.forEach((row) => {
             
-            const simil = phraseSimilarity("You gotta see the baby!", row['dialogue']);
+            const simil = phraseSimilarity("Vandelay Industries", row['dialogue']);
             if (simil > similarity_thresh) {
                 console.log(row['dialogue'])
                 console.log(simil)
@@ -31,9 +31,14 @@ function main() {
 }
 
 
+
+
+
 function phraseSimilarity(searchphrase, data) {
     //go through data string with width of searchphrase word count and return highest score
-    //TODO: drop punctuation
+    
+    //drops commas from input string
+    data = data.replace(/,/g, ' ')
     const dataArray = data.toString().split(' ')
     const searchphraseArray = searchphrase.split(" ")
     let score = 0
