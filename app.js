@@ -63,8 +63,8 @@ function phraseSimilarity(searchphrase, data) {
     return max_simil
 }
 
-function rankedMatches(number_of_matches) {
-    //return first number_of_matches results in order
+function rankedMatches(number_of_matches, all_matches) {
+    //return first number_of_matches results in descending order of match
 }
 
 
