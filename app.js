@@ -9,18 +9,20 @@ const stringSimilarity = require("string-similarity")
 function main() {
     const dao = new AppDAO('./database.sqlite3')
     const dialogueRepo = new DialogueRepository(dao)
-    const similarity_thresh = 0.7
+    const similarity_thresh = 0.6
     let match_count = 0
+    var resulting_matches = []
 
      dialogueRepo.getAll()
      .then((rows) => {
         rows.forEach((row) => {
             
-            const simil = phraseSimilarity("Vandelay Industries", row['dialogue']);
+            const simil = phraseSimilarity("You're in latex", row['dialogue']);
             if (simil > similarity_thresh) {
                 console.log(row['dialogue'])
                 console.log(simil)
                 match_count += 1
+                resulting_matches.push([row['dialogue'],simil])
             }
             
         });
@@ -35,13 +37,13 @@ function main() {
 
 
 function phraseSimilarity(searchphrase, data) {
-    //go through data string with width of searchphrase word count and return highest score
+    //go through data string with width of searchphrase word count and return highest similarity rating
     
     //drops commas from input string
     data = data.replace(/,/g, ' ')
     const dataArray = data.toString().split(' ')
     const searchphraseArray = searchphrase.split(" ")
-    let score = 0
+
     let max_simil = 0
     for (let i = 0; i < dataArray.length; i++) {
 

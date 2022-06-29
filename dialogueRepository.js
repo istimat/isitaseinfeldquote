@@ -15,7 +15,7 @@ class DialogueRepository {
       return this.dao.run(sql)
     }
 
-    create(season, episode, actor, dialogue) {
+    create( season, episode, actor, dialogue) {
         return this.dao.run(
           `INSERT INTO dialogues (season, episode, actor, dialogue)
             VALUES (?, ?, ?, ?)`,
