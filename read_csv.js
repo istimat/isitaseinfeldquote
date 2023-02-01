@@ -7,21 +7,23 @@ const AppDAO = require('./dao');
 
 
 function main() {
-    const dao = new AppDAO('./database.sqlite3')
+    const dao = new AppDAO('./database_reduced.sqlite3')
     const dialogueRepo = new DialogueRepository(dao)
-
-    fs.createReadStream("./scripts.csv")
+    i=0
+    fs.createReadStream("./scripts_reduced.csv")
     .pipe(parse({ delimiter: ",", from_line: 2 }))
-    .on("data", function (row) {
-      console.log("Season: " + row[0]);
+    .on("data", async (row) => {
+      //console.log("dialogue: " + row[3]);
+      i++
+      const count = i
       const season = row[0]
       const episode = row[1]
       const actor = row[2]
       const dialogue = row[3]
-      dialogueRepo.createTable()
-      .then(() => dialogueRepo.create(season, episode, actor, dialogue))
+      await dialogueRepo.createTable()
+      .then(() => dialogueRepo.create(count, season, episode, actor, dialogue))
 
-    })
+    });
 
 }
 

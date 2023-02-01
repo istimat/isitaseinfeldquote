@@ -8,6 +8,7 @@ class DialogueRepository {
       const sql = `
         CREATE TABLE IF NOT EXISTS dialogues (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
+          count INTEGER,
           season INTEGER,
           episode INTEGER,
           actor TEXT,
@@ -15,11 +16,11 @@ class DialogueRepository {
       return this.dao.run(sql)
     }
 
-    create( season, episode, actor, dialogue) {
+    create(count, season, episode, actor, dialogue) {
         return this.dao.run(
-          `INSERT INTO dialogues (season, episode, actor, dialogue)
-            VALUES (?, ?, ?, ?)`,
-          [season, episode, actor, dialogue])
+          `INSERT INTO dialogues (count, season, episode, actor, dialogue)
+            VALUES (?, ?, ?, ?, ?)`,
+          [count, season, episode, actor, dialogue])
       }
     
     getAll() {
