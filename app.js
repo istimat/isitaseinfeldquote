@@ -12,8 +12,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/search/:query?', function(req, res){
     var query = req.params.query;
-    result = get_matches(query)
-    res.send(result)
+    result = get_matches(query).then(function(result) {
+        res.send(result)
+    });
   });
   
   app.listen(port, () => {
@@ -32,28 +33,29 @@ const similarity_thresh = 0.4
 function get_matches(query) {
     let match_count = 0
     var resulting_matches = []
-     dialogueRepo.getAll()
+    return dialogueRepo.getAll()
      .then((rows) => {
         rows.forEach((row) => {
 
             const simil = phraseSimilarity(query, row['dialogue']);
             //console.log(row['dialogue'])
             if (simil >= similarity_thresh) {
-                console.log(row['dialogue'])
-                console.log(simil)
+                //console.log(row['dialogue'])
+                //console.log(simil)
                 match_count += 1
                 resulting_matches.push([row['dialogue'],simil, row['count']])
             }
 
         });
         console.log("Matches Found: " + match_count)
-        console.log(resulting_matches)
-        })
-    return resulting_matches
+        //console.log(resulting_matches)
+        return resulting_matches
+    });
+
 }
-function send_matches() {
-    return resulting_matches
-}
+
+
+
 
 
 
