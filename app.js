@@ -3,27 +3,56 @@ const fs = require('fs');
 const DialogueRepository = require('./dialogueRepository');
 const AppDAO = require('./dao');
 const stringSimilarity = require("string-similarity")
-const express = require('express')
-const app = express()
-const path = require('path')
-const port = 3000
 
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+
+var indexRouter = require('./routes/index');
+//var searchRouter = require('./routes/search');
+const bodyParser = require('body-parser')
+var app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/search/:query?', function(req, res){
-    var query = req.params.query;
-    result = get_matches(query).then(function(result) {
-        res.send(result)
-    });
-  });
-  
-  app.listen(port, () => {
-    console.log(`+listening on port ${port}`)
-  })
+app.use('/', indexRouter);
 
-  app.get('/client.js', function(req, res){
-    res.sendFile(path.join(__dirname, '/client.js'));
-  });
+
+
+//app.use('/users', usersRouter);
+
+// // catch 404 and forward to error handler
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
+
+// error handler
+// app.use(function(err, req, res, next) {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+//   // render the error page
+//   res.status(err.status || 500);
+//   res.render('error');
+// });
+
+// app.get('/search/:query?', function(req, res){
+//     var query = req.params.query;
+//     result = get_matches(query)
+//     res.send(result)
+// });
+
 
 const dao = new AppDAO('./database_reduced.sqlite3')
 const dialogueRepo = new DialogueRepository(dao)
@@ -33,29 +62,29 @@ const similarity_thresh = 0.4
 function get_matches(query) {
     let match_count = 0
     var resulting_matches = []
-    return dialogueRepo.getAll()
+     dialogueRepo.getAll()
      .then((rows) => {
         rows.forEach((row) => {
 
             const simil = phraseSimilarity(query, row['dialogue']);
             //console.log(row['dialogue'])
             if (simil >= similarity_thresh) {
-                //console.log(row['dialogue'])
-                //console.log(simil)
+                console.log(row['dialogue'])
+                console.log(simil)
                 match_count += 1
                 resulting_matches.push([row['dialogue'],simil, row['count']])
             }
 
         });
         console.log("Matches Found: " + match_count)
-        //console.log(resulting_matches)
-        return resulting_matches
-    });
-
+        console.log(resulting_matches)
+        })
+    return resulting_matches
 }
 
-
-
+function send_matches() {
+    return resulting_matches
+}
 
 
 
@@ -97,3 +126,4 @@ function rankedMatches(number_of_matches, all_matches) {
     //return first number_of_matches results in descending order of match
 }
 
+module.exports = app;
