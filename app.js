@@ -1,7 +1,7 @@
 const fs = require('fs');
 
-const DialogueRepository = require('./dialogueRepository');
-const AppDAO = require('./dao');
+const DialogueRepository = require('./models/dialogueRepository');
+const AppDAO = require('./models/dao');
 const stringSimilarity = require("string-similarity")
 
 var createError = require('http-errors');
@@ -11,7 +11,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-//var searchRouter = require('./routes/search');
 const bodyParser = require('body-parser')
 var app = express();
 
@@ -25,36 +24,26 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+//app.use('/', indexRouter);
 
 
+app.get("/", (req, res) => {
+    res.render("index", {text: "World2"})
+  })
+  
+  app.post("/search", (req, res) => {
+    console.log(req.body.query)
+    var result = get_matches(req.body.query)
+    //console.log(result)
+    result.then((a) => {
+  
+    res.render("index", {result: a, query: req.body.query})
+  })
+  
+  })
+  
 
-//app.use('/users', usersRouter);
-
-// // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-//   next(createError(404));
-// });
-
-// error handler
-// app.use(function(err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
-
-// app.get('/search/:query?', function(req, res){
-//     var query = req.params.query;
-//     result = get_matches(query)
-//     res.send(result)
-// });
-
-
-const dao = new AppDAO('./database_reduced.sqlite3')
+const dao = new AppDAO('./models/database_reduced.sqlite3')
 const dialogueRepo = new DialogueRepository(dao)
 const similarity_thresh = 0.4
 
@@ -62,7 +51,7 @@ const similarity_thresh = 0.4
 function get_matches(query) {
     let match_count = 0
     var resulting_matches = []
-     dialogueRepo.getAll()
+    const matches = dialogueRepo.getAll()
      .then((rows) => {
         rows.forEach((row) => {
 
@@ -75,11 +64,13 @@ function get_matches(query) {
                 resulting_matches.push([row['dialogue'],simil, row['count']])
             }
 
-        });
-        console.log("Matches Found: " + match_count)
-        console.log(resulting_matches)
-        })
-    return resulting_matches
+          });
+          console.log("Matches Found: " + match_count)
+          return resulting_matches
+      })
+
+    return matches
+
 }
 
 function send_matches() {

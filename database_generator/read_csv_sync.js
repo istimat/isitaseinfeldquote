@@ -2,7 +2,7 @@ const fs = require('fs');
 const { parse } = require("csv-parse");
 
 const DialogueRepository = require('../dialogueRepository');
-const AppDAO = require('../dao');
+const AppDAO = require('../models/dao');
 
 
 
