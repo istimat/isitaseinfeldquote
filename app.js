@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
     //console.log(result)
     result.then((a) => {
   
-    res.render("index", {result: a, query: req.body.query})
+    res.render("index", {result: a.dialogue, query: req.body.query})
   })
   
   })
@@ -46,6 +46,7 @@ app.get("/", (req, res) => {
 const dao = new AppDAO('./models/database_reduced.sqlite3')
 const dialogueRepo = new DialogueRepository(dao)
 const similarity_thresh = 0.4
+
 
 
 function get_matches(query) {
@@ -58,25 +59,47 @@ function get_matches(query) {
             const simil = phraseSimilarity(query, row['dialogue']);
             //console.log(row['dialogue'])
             if (simil >= similarity_thresh) {
-                console.log(row['dialogue'])
-                console.log(simil)
+                //console.log(row['dialogue'])
+                //console.log(simil)
                 match_count += 1
-                resulting_matches.push([row['dialogue'],simil, row['count']])
+                resulting_matches.push({
+                    dialogue: row['dialogue'],
+                    similarity: simil, 
+                    line_index: row['count']
+                })
             }
 
           });
-          console.log("Matches Found: " + match_count)
-          return resulting_matches
+          console.log(resulting_matches[1].similarity)
+          
+          return bestMatch(resulting_matches)
       })
 
     return matches
 
 }
 
-function send_matches() {
-    return resulting_matches
+function bestMatch(all_matches) {
+    var max_simil = 0
+    var bestMatch = {} 
+    for (let i = 0; i< all_matches.length; i++) {
+        if (all_matches[i].similarity > max_simil) {
+            max_simil = all_matches[i].similarity
+            bestMatch = all_matches[i]
+        }
+    }
+    console.log("BEST MATCH:")
+    console.log(bestMatch)
+    return bestMatch
 }
 
+
+function rankedMatches(number_of_matches, all_matches) {
+    var rankedMatches = []
+    for (let i = 0; i<= all_matches.length; i++) {
+
+    }
+}
 
 
 
@@ -113,8 +136,6 @@ function phraseSimilarity(searchphrase, data) {
     return max_simil
 }
 
-function rankedMatches(number_of_matches, all_matches) {
-    //return first number_of_matches results in descending order of match
-}
+
 
 module.exports = app;
