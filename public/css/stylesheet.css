@@ -1,0 +1,40 @@
+h2 {
+    margin: auto;
+    text-align: center; 
+    /* width: 50%; */
+    font-size: xx-large;
+    padding: 10px;
+}
+
+#entire_body {
+    padding:5%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#search_bar {
+    display: grid;
+    justify-content: center;
+    /* width: 80%; */
+    /* border: 3px solid green; */
+    padding: 20px;
+}
+
+#bar {
+    /* width: 100%; */
+    width: 300px; 
+    padding: 5px;
+}
+
+#submit {
+    display: grid;
+    justify-content: center;
+    /* size: 50px; */
+}
+
+.center {
+    text-align: center;
+}
+
+#result {
+    background-color: powderblue; 
+}

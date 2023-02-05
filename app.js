@@ -77,7 +77,7 @@ function get_matches(query) {
             }
 
           });
-          console.log(resulting_matches[1].similarity)
+          //console.log(resulting_matches[1].similarity)
           
           return bestMatch(resulting_matches)
       })
