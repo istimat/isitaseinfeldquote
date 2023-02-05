@@ -37,13 +37,17 @@ app.get("/", (req, res) => {
     //console.log(result)
     result.then((a) => {
   
-    res.render("index", {result: a.dialogue, query: req.body.query})
+    res.render("index", {dialogue: a.dialogue,
+                         season: a.season,
+                         episode: a.episode,
+                         actor: a.actor,
+                         query: req.body.query})
   })
   
   })
   
 
-const dao = new AppDAO('./models/database_reduced.sqlite3')
+const dao = new AppDAO('./models/database.sqlite3')
 const dialogueRepo = new DialogueRepository(dao)
 const similarity_thresh = 0.4
 
@@ -64,6 +68,9 @@ function get_matches(query) {
                 match_count += 1
                 resulting_matches.push({
                     dialogue: row['dialogue'],
+                    season: row['season'],
+                    episode: row['episode'],
+                    actor: row['actor'],
                     similarity: simil, 
                     line_index: row['count']
                 })
