@@ -38,3 +38,7 @@ h2 {
 #result {
     background-color: powderblue; 
 }
+
+span {
+    white-space: pre-wrap;
+  }

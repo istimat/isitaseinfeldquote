@@ -29,6 +29,7 @@ class AppDAO {
     }
 
     get(sql, params = []) {
+      
         return new Promise((resolve, reject) => {
           this.db.get(sql, params, (err, result) => {
             if (err) {

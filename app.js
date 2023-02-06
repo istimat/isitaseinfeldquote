@@ -36,13 +36,19 @@ app.get("/", (req, res) => {
     var result = get_matches(req.body.query)
     //console.log(result)
     result.then((a) => {
-  
-    res.render("index", {dialogue: a.dialogue,
-                         season: a.season,
-                         episode: a.episode,
-                         actor: a.actor,
-                         query: req.body.query})
-  })
+
+        get_context(a.line_index, 4).then((values) => {
+            
+            res.render("index", {dialogue: a.dialogue,
+                before: values[0],
+                after: values[1],
+                season: a.season,
+                episode: a.episode,
+                actor: a.actor,
+                query: req.body.query})
+            
+            })
+        })
   
   })
   
@@ -52,6 +58,33 @@ const dialogueRepo = new DialogueRepository(dao)
 const similarity_thresh = 0.4
 
 
+
+function get_context(index, numberOfLines) {
+    const before = dialogueRepo.getBefore(index, numberOfLines)
+    .then((rows) => {
+        var dialogue = ""
+        rows.forEach((row) => {
+            dialogue = dialogue + row['actor'] + ": " + row['dialogue'] + "\n"
+        })
+            // console.log(dialogue)
+            return dialogue
+    })
+
+    const after = dialogueRepo.getAfter(index, numberOfLines)
+    .then((rows) => {
+        var dialogue = ""
+        rows.forEach((row) => {
+            dialogue = dialogue + row['actor'] + "  : " + row['dialogue'] + "\n"
+
+        })
+        // console.log(dialogue)
+            return dialogue
+    })
+
+    var all_context = Promise.all([before, after])
+
+    return all_context
+}
 
 function get_matches(query) {
     let match_count = 0
@@ -95,8 +128,8 @@ function bestMatch(all_matches) {
             bestMatch = all_matches[i]
         }
     }
-    console.log("BEST MATCH:")
-    console.log(bestMatch)
+    // console.log("BEST MATCH:")
+    // console.log(bestMatch)
     return bestMatch
 }
 
