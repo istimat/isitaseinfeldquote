@@ -64,7 +64,7 @@ function get_context(index, numberOfLines) {
     .then((rows) => {
         var dialogue = ""
         rows.forEach((row) => {
-            dialogue = dialogue + row['actor'] + ": " + row['dialogue'] + "\n"
+            dialogue = dialogue + row['actor'] + ": " + row['dialogue'] + "<br>"
         })
             // console.log(dialogue)
             return dialogue
@@ -74,7 +74,7 @@ function get_context(index, numberOfLines) {
     .then((rows) => {
         var dialogue = ""
         rows.forEach((row) => {
-            dialogue = dialogue + row['actor'] + "  : " + row['dialogue'] + "\n"
+            dialogue = dialogue + row['actor'] + "  : " + row['dialogue'] + "<br>"
 
         })
         // console.log(dialogue)
