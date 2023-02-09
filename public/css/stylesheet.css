@@ -3,7 +3,7 @@
 }
 html {
     font-family: "Inconsolata", Menlo, Chicago, monospace;
-    font-size: 18px;
+    font-size: 1rem;
     letter-spacing: -0.025em;
     min-height: 100vh;
 }
@@ -27,7 +27,7 @@ html {
     top: 0;
     left: 0;
     right: 0;
-    bottom: 1000;
+    /* bottom: 1000; */
     display: flex;
     flex-direction: row;
     align-items: flex-end;
@@ -91,19 +91,21 @@ html {
     padding: 0.2rem 0.8rem;
     margin: 0;
     margin-bottom: 0.1rem;
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: bold;
 }
 .menu-items .apple {
     filter: grayscale(100%);
+    font-size: 1rem;
 }
 .window {
     display: none;
     flex-direction: column;
     margin: 1rem;
+    margin-top: 5rem;
     width: 600px;
     min-width: 320px;
-    min-height: 100px;
+    min-height: 300px;
     resize: both;
     overflow: hidden;
     background-color: #fff;
@@ -114,7 +116,7 @@ html {
 }
 .window__pane {
     overflow-y: scroll;
-    padding: 1rem 2rem;
+    /* padding: 1rem 2rem; */
     margin-bottom: 1rem;
 }
 .window__pane::-webkit-scrollbar {
@@ -247,4 +249,31 @@ html {
     border: 0.1rem solid black;
     border-width: 0.1rem 0;
     font-size: 1rem;
+}
+
+.description {
+    flex: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.6rem 0.4rem;
+    border-width: 0.1rem 0;
+    font-size: 1rem;
+}
+
+.files {
+    padding-left: 10px;
+}
+
+.button {
+    flex: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1rem;
+    border-radius: 0.5em;
+    background-color: rgb(224, 222, 222);
+    color: black;
+    font-family: "Inconsolata", Menlo, Chicago, monospace;
+
 }

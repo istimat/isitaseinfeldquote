@@ -25,17 +25,18 @@
     <div class="window" id="system-window" data-is-open="data-is-open">
       <div class="title-bar"> 
         <button class="close"><span class="hidden">Close</span></button>
-        <h1 class="title">Is it a Seinfeld quote?</h1>
+        <h1 class="title">Seinfeld quote</h1>
         <button class="resize"><span class="hidden">Resize</span></button>
       </div>
       <div class="details-bar"><span>21 items</span><span>1,227K in disk</span><span>57K Lines available</span></div>
       <div class="window__pane">
         <form action="/" method="POST">
           <div id="search_bar">
+            <div class="description">Enter your search query below:</div>
             <input id="bar" type="search" name="query" value="<%=locals.query || "No soup for you!" %>" />
           </div>
           <div id="submit">
-            <button type="submit">Submit</button>
+            <button class="button" type="submit">Submit</button>
           </div>
         </form>
         <ul class="files">
