@@ -7,29 +7,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>isitaseinfeldquote?</title>
 </head>
-<body id="entire_body">
-  <h2>Is it a Seinfeld quote?</h2>
-  <!-- <p class="center">Try searching for an expression:</p> -->
-  <form action="/" method="POST">
-    <div id="search_bar">
-      <input id="bar" type="search" name="query" value="<%=locals.query || "No soup for you!" %>" />
+  <div class="menu-bar">
+    <ul class="menu-items">
+      <li class="apple">🍎</li>
+      <li>File</li>
+      <li>Edit</li>
+      <li>View</li>
+      <li>Special</li>
+    </ul>
+  </div>
+  <div class="desktop">
+    <div class="desktop-icons">
+      <div class="icon disk" data-window="system-window" data-is-open="data-is-open"><span class="icon-label"></span></div>
+      <div class="icon"><span class="icon-label" contenteditable="true">Jokes</span></div>
+      <div class="icon"><span class="icon-label" contenteditable="true">Kramer</span></div>
     </div>
-    <div id="submit">
-      <button type="submit">Submit</button>
+    <div class="window" id="system-window" data-is-open="data-is-open">
+      <div class="title-bar"> 
+        <button class="close"><span class="hidden">Close</span></button>
+        <h1 class="title">Is it a Seinfeld quote?</h1>
+        <button class="resize"><span class="hidden">Resize</span></button>
+      </div>
+      <div class="details-bar"><span>21 items</span><span>1,227K in disk</span><span>57K Lines available</span></div>
+      <div class="window__pane">
+        <form action="/" method="POST">
+          <div id="search_bar">
+            <input id="bar" type="search" name="query" value="<%=locals.query || "No soup for you!" %>" />
+          </div>
+          <div id="submit">
+            <button type="submit">Submit</button>
+          </div>
+        </form>
+        <ul class="files">
+          <%if (locals.dialogue) { %>
+            <p>Result found! </p>
+            <p>Season <%= locals.season %>, Episode <%= locals.episode %>:  </p>
+            <span id="before"><%- locals.before %></span>
+            <div><span id="result"><%= locals.actor %> : <%= locals.dialogue %> </span></div>  
+            <span id="after"><%- locals.after %> </span>
+            <% } %> 
+        </ul>
+      </div>
     </div>
-  </form>
-  <%if (locals.dialogue) { %>
-  <p>Result found! </p>
-  <p>Season <%= locals.season %>, Episode <%= locals.episode %>:  </p>
+  </div>
 
-  <span id="before"><%- locals.before %></span>
-  
-  <div><span id="result"><%= locals.actor %> : <%= locals.dialogue %> </span></div>
-  
-  <span id="after"><%- locals.after %> </span>
-
-
-
-  <% } %> 
-</body>
 </html>
