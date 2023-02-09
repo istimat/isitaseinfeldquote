@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
     res.render("index", {text: "World2"})
   })
   
-  app.post("/search", (req, res) => {
+  app.post("/", (req, res) => {
     console.log(req.body.query)
     var result = get_matches(req.body.query)
     //console.log(result)
