@@ -33,7 +33,7 @@
         <form action="/" method="POST">
           <div id="search_bar">
             <div class="description">Enter your search query below:</div>
-            <input id="bar" type="search" name="query" value="<%=locals.query || "No soup for you!" %>" />
+            <input id="bar" type="search" onfocus="this.value=''" name="query" value="<%=locals.query || "No soup for you!" %>" />
           </div>
           <div id="submit">
             <button class="button" type="submit">Submit</button>
@@ -51,5 +51,9 @@
       </div>
     </div>
   </div>
-
+  <script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
 </html>
